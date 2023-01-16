@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import Img from '../img/img.png'
-import Attach from '../img/attach.png'
 import { AuthContext } from '../context/AuthContext'
 import { ChatContext } from '../context/ChatContext'
 import { arrayUnion, doc, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore'
@@ -50,17 +49,17 @@ function Input() {
       })
     }
 
-    await updateDoc(doc(db,'userChats', currentUser.uid),{
-      [data.chatId+'.lastMessage']:{
+    await updateDoc(doc(db, 'userChats', currentUser.uid), {
+      [data.chatId + '.lastMessage']: {
         text,
       },
-      [data.chatId+'.date']: serverTimestamp()
+      [data.chatId + '.date']: serverTimestamp()
     })
-    await updateDoc(doc(db,'userChats', data.user.uid),{
-      [data.chatId+'.lastMessage']:{
+    await updateDoc(doc(db, 'userChats', data.user.uid), {
+      [data.chatId + '.lastMessage']: {
         text,
       },
-      [data.chatId+'.date']: serverTimestamp()
+      [data.chatId + '.date']: serverTimestamp()
     })
 
     setText('')
@@ -71,7 +70,6 @@ function Input() {
     <div className='input'>
       <input type="text" placeholder='Type something...' value={text} onChange={e => setText(e.target.value)} />
       <div className="send">
-        <img src={Attach} alt="attach icon" />
         <input type="file" id="file" style={{ display: 'none' }} onChange={e => setImage(e.target.files[0])} />
         <label htmlFor="file">
           <img src={Img} alt="upload icon" />
