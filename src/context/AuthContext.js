@@ -11,7 +11,6 @@ export const AuthContextProvider = React.memo(({ children }) => {
 
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
-            console.log(user);
         });
 
         return () => unsubscribe()
