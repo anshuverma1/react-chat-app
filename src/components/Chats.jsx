@@ -1,29 +1,45 @@
-import React from 'react'
-
+import React, { useContext, useEffect, useState } from 'react'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { db } from '../firebase'
+import { AuthContext } from '../context/AuthContext'
+import { ChatContext } from '../context/ChatContext'
 export const Chats = () => {
+
+    const [chats, setChats] = useState([])
+    const currentUser = useContext(AuthContext)
+    const { dispatch } = useContext(ChatContext)
+
+    useEffect(() => {
+        const getChats = () => {
+            const unsub = onSnapshot(doc(db, 'userChats', currentUser.uid), (doc) => {
+                setChats(doc.data())
+            });
+
+            return () => unsub()
+        }
+
+        currentUser.uid && getChats()
+    }, [currentUser.uid])
+
+    const handleSelect = (userInfo) => {
+        dispatch({
+            type: 'CHANGE_USER',
+            payload: userInfo
+        })
+    }
     return (
         <div className='chats'>
-            <div className="userChat">
-                <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="" />
-                <div className="userChatInfo">
-                    <span>Tanish</span>
-                    <p>Hello</p>
-                </div>
-            </div>
-            <div className="userChat">
-                <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="" />
-                <div className="userChatInfo">
-                    <span>Tanish</span>
-                    <p>Hello</p>
-                </div>
-            </div>
-            <div className="userChat">
-                <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="" />
-                <div className="userChatInfo">
-                    <span>Tanish</span>
-                    <p>Hello</p>
-                </div>
-            </div>
+            {Object.entries(chats)?.sort((a,b)=> b[1].date - a[1].date).map((chat) => {
+                return (
+                    <div className="userChat" key={chat[0]} onClick={()=> handleSelect(chat[1].userInfo)}>
+                        <img src={chat[1].userInfo.photoURL} alt="" />
+                        <div className="userChatInfo">
+                            <span>{chat[1].userInfo.displayName}</span>
+                            <p>{chat[1].lastMessage?.text}</p>
+                        </div>
+                    </div>
+                )
+            })}
         </div>
     )
 }
