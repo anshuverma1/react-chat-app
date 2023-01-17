@@ -11,24 +11,28 @@ function Input() {
 
   const [text, setText] = useState('')
   const [image, setImage] = useState(null)
+  const id = uuid()
 
   const currentUser = useContext(AuthContext)
   const { data } = useContext(ChatContext)
 
   const handleSend = async (e) => {
+    e.preventDefault()
+    setText('')
     if (image) {
-      const storageRef = ref(storage, uuid())
+      const storageRef = ref(storage, id)
       const uploadTask = uploadBytesResumable(storageRef, image)
 
       uploadTask.on(
         (error) => {
           // Handle unsuccessful uploads
+          console.log(error);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             await updateDoc(doc(db, 'chats', data.chatId), {
               messages: arrayUnion({
-                id: uuid(),
+                id,
                 text,
                 senderId: currentUser.uid,
                 date: Timestamp.now(),
@@ -41,7 +45,7 @@ function Input() {
     } else {
       await updateDoc(doc(db, 'chats', data.chatId), {
         messages: arrayUnion({
-          id: uuid(),
+          id,
           text,
           senderId: currentUser.uid,
           date: Timestamp.now()
@@ -61,22 +65,22 @@ function Input() {
       },
       [data.chatId + '.date']: serverTimestamp()
     })
-
-    setText('')
     setImage(null)
   }
 
   return (
-    <div className='input'>
-      <input type="text" placeholder='Type something...' value={text} onChange={e => setText(e.target.value)} />
-      <div className="send">
-        <input type="file" id="file" style={{ display: 'none' }} onChange={e => setImage(e.target.files[0])} />
-        <label htmlFor="file">
-          <img src={Img} alt="upload icon" />
-        </label>
-        <button onClick={handleSend}>Send</button>
+    <form onSubmit={handleSend}>
+      <div className='input'>
+        <input type="text" placeholder='Type something...' value={text} onChange={e => setText(e.target.value)} />
+        <div className="send">
+          <input type="file" id="file" style={{ display: 'none' }} onChange={e => setImage(e.target.files[0])} />
+          <label htmlFor="file">
+            <img src={Img} alt="upload icon" />
+          </label>
+          <button>Send</button>
+        </div>
       </div>
-    </div>
+    </form>
   )
 }
 
