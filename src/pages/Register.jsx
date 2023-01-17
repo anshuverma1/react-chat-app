@@ -9,9 +9,12 @@ import { Link, useNavigate } from 'react-router-dom';
 function Register() {
 
   const [err, setErr] = useState(false)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
+    setLoading(true)
+    setErr(false)
     e.preventDefault()
 
     const displayName = e.target[0].value
@@ -43,12 +46,14 @@ function Register() {
             })
 
             await setDoc(doc(db, 'userChats', res.user.uid), {})
+            setLoading(false)
             navigate('/login')
           });
         }
       );
     } catch (error) {
       setErr(true)
+      setLoading(false)
     }
 
   }
@@ -67,8 +72,10 @@ function Register() {
             <img src={Add} alt="add an avatar" />
             <span>Add an avatar</span>
           </label>
-          <button>Sign Up</button>
-          {err && <span>Something went wrong.</span>}
+          <button>
+            { loading ? <span className="loading-icon"></span> : 'Sign Up' }
+          </button>
+          {err && <span style={{color: 'red'}}>Something went wrong.</span>}
         </form>
         <p>You do have an account? <Link to='/login'>Login</Link></p>
       </div>

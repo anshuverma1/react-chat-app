@@ -6,9 +6,12 @@ import { auth } from '../firebase'
 function Login() {
 
   const [err, setErr] = useState(false)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
+    setLoading(true)
+    setErr(false)
     e.preventDefault()
 
     const email = e.target[0].value
@@ -17,9 +20,11 @@ function Login() {
     try {
 
       await signInWithEmailAndPassword(auth, email, password)
+      setLoading(false)
       navigate('/')
 
     } catch (error) {
+      setLoading(false)
       setErr(true)
     }
 
@@ -33,8 +38,10 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <input type="email" placeholder='Email' />
           <input type="password" placeholder='Password' />
-          <button>Login</button>
-          {err && <span>Something went wrong.</span>}
+          <button>
+            {loading ? <span className="loading-icon"></span> : 'Login'}
+          </button>
+          {err && <span style={{color:'red'}}>Something went wrong.</span>}
         </form>
         <p>Don't have an account? <Link to='/register'>Sign up</Link></p>
       </div>
