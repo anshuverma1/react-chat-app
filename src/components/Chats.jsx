@@ -30,6 +30,9 @@ export const Chats = () => {
     return (
         <div className='chats'>
             {Object.entries(chats)?.sort((a,b)=> b[1].date - a[1].date).map((chat) => {
+                const time = new Date(chat[1].date * 1000).toLocaleString().slice(11)
+                const t1 = time.substring(0,4) //extracted time
+                const t2 = time.slice(7)       // extracted am, pm
                 return (
                     <div className="userChat" key={chat[0]} onClick={()=> handleSelect(chat[1].userInfo)}>
                         <img src={chat[1].userInfo.photoURL} alt="" />
@@ -37,6 +40,7 @@ export const Chats = () => {
                             <span>{chat[1].userInfo.displayName}</span>
                             <p>{chat[1].lastMessage?.text}</p>
                         </div>
+                        <span className='time'>{t1}{t2}</span>
                     </div>
                 )
             })}

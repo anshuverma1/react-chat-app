@@ -17,7 +17,9 @@
 }
 
 .formContainer {
-    background-color: #a7bcff;
+    // background-color: #a7bcff;
+    background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -31,6 +33,7 @@
         flex-direction: column;
         gap: 10px;
         align-items: center;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
         .logo {
             color: #5d5b8d;
@@ -114,7 +117,13 @@
 }
 
 .home {
-    background-color: #a7bcff;
+    // fallback color
+    background: #7F7FD5;
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #91EAE4, #7F7FD5);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right,  #86A8E7, #7F7FD5);
+    
     height: 100vh;
     display: flex;
     align-items: center;
@@ -127,6 +136,7 @@
         height: 80%;
         display: flex;
         overflow: hidden;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
         @include tablet {
             width: 90%;
@@ -202,6 +212,7 @@
             gap: 10px;
             color: white;
             cursor: pointer;
+            position: relative;
 
             &:hover {
                 background-color: #2f2d52;
@@ -225,6 +236,12 @@
                     color: lightgray;
                     margin: 0;
                 }
+            }
+            .time{
+                font-size: 14px;
+                font-weight: 100;
+                position: absolute;
+                right: 10%;
             }
         }
     }
