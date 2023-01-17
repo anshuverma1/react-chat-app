@@ -41,7 +41,7 @@ function Login() {
           <button>
             {loading ? <span className="loading-icon"></span> : 'Login'}
           </button>
-          {err && <span style={{color:'red'}}>Something went wrong.</span>}
+          {err && <span style={{color:'red'}}>Incorrect username or password.</span>}
         </form>
         <p>Don't have an account? <Link to='/register'>Sign up</Link></p>
       </div>
