@@ -36,8 +36,8 @@ function Login() {
         <span className="logo">Chatty</span>
         <span className="title">Login</span>
         <form onSubmit={handleSubmit}>
-          <input type="email" placeholder='Email' />
-          <input type="password" placeholder='Password' />
+          <input type="email" placeholder='Email' required/>
+          <input type="password" placeholder='Password' required/>
           <button>
             {loading ? <span className="loading-icon"></span> : 'Login'}
           </button>
