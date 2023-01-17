@@ -22,7 +22,7 @@ function Search() {
       })
     } catch (error) {
       setErr(true)
-      console.log(error.message);
+      console.log(error);
     }
 
   }

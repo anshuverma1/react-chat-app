@@ -258,6 +258,23 @@
             padding: 10px;
             color: lightgrey;
 
+            .userInfo{
+                display: flex;
+            }
+
+            img{
+                height: 30px;
+                width: 30px;
+                border-radius: 50%;
+            }
+
+            span{
+                font-weight: bold;
+                color: white;
+                font-size: 20px;
+                margin-left: 10px;
+            }
+
 
             .chatIcons {
                 display: flex;
