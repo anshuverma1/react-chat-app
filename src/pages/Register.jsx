@@ -99,7 +99,7 @@ function Register() {
           {err && <span style={{ color: 'red' }}>Something went wrong.</span>}
           {passwordValidate && <span style={{ color: 'red' }}>Password does't match confirm password!</span>}
         </form>
-        <p>You do have an account? <Link to='/login'>Login</Link></p>
+        <p>Already have an account? <Link to='/login'>Login</Link></p>
       </div>
     </div>
   )
